@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Зал Славы — pshk01</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Rubik', sans-serif;
+    background: #0a0605;
+    color: #e8dcc4;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 50% -10%, rgba(139,26,26,0.35), transparent 60%),
+      radial-gradient(circle at 90% 100%, rgba(139,26,26,0.2), transparent 50%),
+      radial-gradient(circle at 0% 80%, rgba(212,162,78,0.08), transparent 50%),
+      linear-gradient(180deg, #050302 0%, #0d0705 40%, #0a0605 100%);
+    z-index: -3;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: repeating-linear-gradient(0deg, transparent 0, transparent 3px, rgba(212,162,78,0.015) 3px, rgba(212,162,78,0.015) 4px);
+    z-index: -2;
+    pointer-events: none;
+  }
+  .container { max-width: 1150px; margin: 0 auto; padding: 0 24px; }
+  .dota-title {
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #f9ecca 0%, #d4a24e 45%, #8b6b2e 75%, #d4a24e 100%);
+    background-size: 100% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.9)) drop-shadow(0 0 20px rgba(212,162,78,0.25));
+    animation: titleShimmer 6s ease-in-out infinite;
+  }
+  @keyframes titleShimmer {
+    0%, 100% { background-position: 0% 0%; }
+    50% { background-position: 0% 100%; }
+  }
+  .ornament {
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; margin: 14px auto 60px; max-width: 600px;
+  }
+  .ornament::before, .ornament::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,162,78,0.6) 30%, #d4a24e 50%, rgba(212,162,78,0.6) 70%, transparent);
+  }
+  .ornament .gem {
+    width: 8px; height: 8px; background: #d4a24e; transform: rotate(45deg);
+    box-shadow: 0 0 12px #d4a24e, 0 0 25px rgba(212,162,78,0.6);
+    animation: gemPulse 2.5s ease-in-out infinite;
+  }
+  @keyframes gemPulse {
+    0%, 100% { box-shadow: 0 0 12px #d4a24e, 0 0 25px rgba(212,162,78,0.6); transform: rotate(45deg) scale(1); }
+    50% { box-shadow: 0 0 20px #f9ecca, 0 0 40px rgba(212,162,78,0.9); transform: rotate(45deg) scale(1.2); }
+  }
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 80px 20px 60px; position: relative;
+  }
+  .hero::before, .hero::after {
+    content: ''; position: absolute; width: 60px; height: 60px;
+    border: 2px solid rgba(212,162,78,0.4); top: 40px;
+  }
+  .hero::before { left: 40px; border-right: none; border-bottom: none; }
+  .hero::after { right: 40px; border-left: none; border-bottom: none; }
+  .hero .rank-badge {
+    font-family: 'Cinzel', serif; font-size: 0.75rem;
+    letter-spacing: 8px; text-transform: uppercase; color: #8b6b2e;
+    margin-bottom: 30px; opacity: 0.9;
+    animation: fadeDown 1s ease-out both;
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 0.9; transform: translateY(0); }
+  }
+  .avatar-wrap {
+    position: relative; padding: 6px;
+    background: linear-gradient(135deg, #f9ecca, #d4a24e 25%, #8b6b2e 50%, #d4a24e 75%, #f9ecca);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #0a0605, 0 0 0 3px rgba(212,162,78,0.5), 0 0 50px rgba(212,162,78,0.4), 0 0 100px rgba(139,26,26,0.35), inset 0 0 30px rgba(0,0,0,0.7);
+    animation: auraPulse 5s ease-in-out infinite, fadeUp 1.2s ease-out 0.2s both;
+    transition: transform 0.3s ease-out;
+  }
+  @keyframes auraPulse {
+    0%, 100% { box-shadow: 0 0 0 2px #0a0605, 0 0 0 3px rgba(212,162,78,0.5), 0 0 50px rgba(212,162,78,0.4), 0 0 100px rgba(139,26,26,0.35), inset 0 0 30px rgba(0,0,0,0.7); }
+    50% { box-shadow: 0 0 0 2px #0a0605, 0 0 0 3px rgba(212,162,78,0.8), 0 0 70px rgba(212,162,78,0.7), 0 0 140px rgba(139,26,26,0.55), inset 0 0 30px rgba(0,0,0,0.7); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .avatar-wrap img {
+    width: 200px; height: 200px; border-radius: 50%;
+    object-fit: cover; display: block; border: 2px solid #0a0605;
+  }
+  .hero h1 {
+    font-size: 4rem; margin: 35px 0 12px; line-height: 1;
+    animation: fadeUp 1.2s ease-out 0.4s both;
+  }
+  .hero .subtitle {
+    font-family: 'Cinzel', serif; font-size: 0.85rem;
+    letter-spacing: 6px; text-transform: uppercase; color: #a8884a;
+    margin-bottom: 30px; font-weight: 500;
+    animation: fadeUp 1.2s ease-out 0.5s both;
+  }
+  .hero .bio {
+    max-width: 640px; color: #b8ab8e; font-size: 1.05rem;
+    margin-bottom: 45px; line-height: 1.8;
+    animation: fadeUp 1.2s ease-out 0.6s both;
+  }
+  .hero .bio strong { color: #f4e0a1; font-weight: 600; }
+  .btn-dota {
+    display: inline-block; padding: 16px 44px;
+    font-family: 'Cinzel', serif; font-weight: 700; font-size: 0.9rem;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: #f4e0a1; text-decoration: none;
+    background: linear-gradient(180deg, #3a0e0e 0%, #1a0505 100%);
+    border: 1px solid #d4a24e; border-radius: 2px;
+    position: relative; overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(244,224,161,0.25), inset 0 -1px 0 rgba(0,0,0,0.5), 0 4px 20px rgba(0,0,0,0.7), 0 0 25px rgba(212,162,78,0.15);
+    transition: all 0.35s; cursor: pointer;
+    animation: fadeUp 1.2s ease-out 0.8s both;
+  }
+  .btn-dota::before {
+    content: ''; position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(244,224,161,0.4), transparent);
+    transition: left 0.7s ease;
+  }
+  .btn-dota:hover::before { left: 100%; }
+  .btn-dota:hover {
+    color: #fff; border-color: #f9ecca;
+    background: linear-gradient(180deg, #5a1515 0%, #2a0808 100%);
+    box-shadow: inset 0 1px 0 rgba(244,224,161,0.5), inset 0 -1px 0 rgba(0,0,0,0.5), 0 6px 25px rgba(0,0,0,0.9), 0 0 50px rgba(212,162,78,0.6);
+    transform: translateY(-2px);
+  }
+  section { padding: 90px 0; }
+  .section-title { font-size: 2.8rem; text-align: center; margin-bottom: 0; }
+  .reveal { opacity: 0; transform: translateY(50px); transition: opacity 1s ease, transform 1s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 22px;
+  }
+  .stat-card {
+    background: linear-gradient(180deg, rgba(26,14,8,0.95), rgba(13,6,5,0.98));
+    border: 1px solid #3a2410; border-radius: 3px;
+    padding: 34px 20px; text-align: center; position: relative;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.7), inset 0 1px 0 rgba(212,162,78,0.15), 0 4px 20px rgba(0,0,0,0.5);
+    transition: all 0.35s; overflow: hidden;
+  }
+  .stat-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(212,162,78,0.15), transparent 70%);
+    opacity: 0; transition: opacity 0.35s; z-index: 0;
+  }
+  .stat-card:hover::before { opacity: 1; }
+  .stat-card > * { position: relative; z-index: 1; }
+  .stat-card::after {
+    content: ''; position: absolute; top: -1px; left: -1px;
+    width: 16px; height: 16px;
+    border-top: 1px solid #d4a24e; border-left: 1px solid #d4a24e;
+    transition: all 0.35s; z-index: 2;
+  }
+  .stat-card:hover {
+    border-color: #d4a24e; transform: translateY(-4px);
+    box-shadow: inset 0 0 40px rgba(212,162,78,0.12), inset 0 1px 0 rgba(212,162,78,0.3), 0 8px 30px rgba(212,162,78,0.25);
+  }
+  .stat-card:hover::after { width: 100%; height: 100%; border-color: rgba(212,162,78,0.3); }
+  .stat-icon {
+    font-size: 2.2rem; margin-bottom: 14px;
+    filter: drop-shadow(0 0 12px rgba(212,162,78,0.7));
+    display: inline-block; transition: transform 0.4s;
+  }
+  .stat-card:hover .stat-icon { transform: scale(1.2) rotate(-8deg); }
+  .stat-value {
+    font-family: 'Cinzel', serif; font-weight: 900; font-size: 2.4rem;
+    color: #f4e0a1;
+    text-shadow: 0 0 25px rgba(212,162,78,0.6), 0 2px 4px rgba(0,0,0,0.9);
+    margin-bottom: 6px; line-height: 1; letter-spacing: 1px;
+  }
+  .stat-label {
+    font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase;
+    color: #8b6b2e; font-weight: 500;
+  }
+  .clips-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 30px;
+  }
+  .clip-card {
+    background: linear-gradient(180deg, #150a08, #0a0504);
+    border: 1px solid #3a2410; border-radius: 3px;
+    overflow: hidden; transition: all 0.4s; position: relative;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+  }
+  .clip-card::before, .clip-card::after {
+    content: ''; position: absolute; width: 20px; height: 20px;
+    border: 1px solid #d4a24e; z-index: 2; pointer-events: none;
+    transition: all 0.4s;
+  }
+  .clip-card::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+  .clip-card::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+  .clip-card:hover {
+    border-color: #d4a24e; transform: translateY(-5px);
+    box-shadow: 0 12px 45px rgba(212,162,78,0.25), 0 0 60px rgba(139,26,26,0.2);
+  }
+  .clip-card:hover::before, .clip-card:hover::after {
+    width: 30px; height: 30px; border-color: #f9ecca;
+  }
+  .clip-card .video-wrap {
+    position: relative; padding-bottom: 56.25%; height: 0;
+    border-bottom: 1px solid #3a2410;
+    background: #000;
+  }
+  .clip-card iframe {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%; border: 0;
+  }
+  .clip-info {
+    padding: 20px; display: flex; justify-content: space-between;
+    align-items: center; gap: 12px;
+  }
+  .clip-info h3 {
+    font-family: 'Cinzel', serif; font-size: 1.05rem;
+    font-weight: 700; color: #e8dcc4;
+    letter-spacing: 1.5px; text-transform: uppercase;
+  }
+  .twitch-btn {
+    background: linear-gradient(180deg, #6b2eaa 0%, #3d1763 100%);
+    color: #fff; text-decoration: none;
+    padding: 10px 18px; border: 1px solid #9146FF;
+    border-radius: 2px;
+    font-family: 'Cinzel', serif; font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    white-space: nowrap; transition: all 0.35s;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 0 15px rgba(145,70,255,0.3);
+    position: relative; overflow: hidden;
+  }
+  .twitch-btn::before {
+    content: ''; position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.6s ease;
+  }
+  .twitch-btn:hover::before { left: 100%; }
+  .twitch-btn:hover {
+    background: linear-gradient(180deg, #9146FF 0%, #6b2eaa 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 0 30px rgba(145,70,255,0.8);
+    transform: translateY(-2px);
+  }
+  .socials {
+    display: flex; justify-content: center; gap: 22px; flex-wrap: wrap;
+  }
+  .socials a {
+    display: flex; align-items: center; gap: 14px;
+    padding: 20px 38px;
+    background: linear-gradient(180deg, #150a08, #0a0504);
+    border: 1px solid #3a2410; border-radius: 3px;
+    color: #e8dcc4; text-decoration: none;
+    font-family: 'Cinzel', serif; font-weight: 700; font-size: 1rem;
+    letter-spacing: 3px; text-transform: uppercase;
+    transition: all 0.35s; position: relative; overflow: hidden;
+  }
+  .socials a::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at center, rgba(212,162,78,0.2), transparent 70%);
+    opacity: 0; transition: opacity 0.35s;
+  }
+  .socials a:hover::before { opacity: 1; }
+  .socials a:hover {
+    border-color: #d4a24e; transform: translateY(-4px);
+    background: linear-gradient(180deg, #251408, #150a05);
+    box-shadow: 0 8px 30px rgba(212,162,78,0.3), 0 0 40px rgba(212,162,78,0.15);
+    color: #f4e0a1;
+  }
+  .socials a svg { width: 24px; height: 24px; transition: transform 0.4s; }
+  .socials a:hover svg { transform: scale(1.15) rotate(-6deg); }
+  footer {
+    text-align: center; padding: 50px 20px 40px;
+    color: #6b5a3a; font-family: 'Cinzel', serif;
+    font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase;
+    border-top: 1px solid #2a1a0a; margin-top: 40px; position: relative;
+  }
+  footer::before {
+    content: '◆'; position: absolute; top: -8px; left: 50%;
+    transform: translateX(-50%); color: #d4a24e;
+    background: #0a0605; padding: 0 15px; font-size: 0.8rem;
+  }
+  .cursor-glow {
+    position: fixed; width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,162,78,0.12), rgba(212,162,78,0.05) 40%, transparent 70%);
+    pointer-events: none; transform: translate(-50%, -50%);
+    z-index: 0; transition: opacity 0.3s; will-change: transform;
+  }
+  #sparks {
+    position: fixed; inset: 0; pointer-events: none;
+    z-index: 1; overflow: hidden;
+  }
+  .spark {
+    position: absolute; bottom: -10px; width: 3px; height: 3px;
+    background: #d4a24e; border-radius: 50%;
+    box-shadow: 0 0 8px #d4a24e, 0 0 15px rgba(212,162,78,0.6);
+    animation: rise linear forwards; opacity: 0;
+  }
+  @keyframes rise {
+    0% { transform: translateY(0) translateX(0) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 0.7; }
+    100% { transform: translateY(-110vh) translateX(var(--drift, 0)) scale(1); opacity: 0; }
+  }
+  @media (max-width: 700px) {
+    .hero h1 { font-size: 2.2rem; letter-spacing: 1px; }
+    .hero .subtitle { font-size: 0.7rem; letter-spacing: 4px; }
+    .hero .rank-badge { letter-spacing: 5px; font-size: 0.65rem; }
+    .avatar-wrap img { width: 150px; height: 150px; }
+    .section-title { font-size: 1.9rem; }
+    .stat-value { font-size: 1.9rem; }
+    .stat-icon { font-size: 1.8rem; }
+    section { padding: 60px 0; }
+    .hero::before, .hero::after { width: 40px; height: 40px; top: 25px; }
+    .hero::before { left: 20px; }
+    .hero::after { right: 20px; }
+    .clip-info { flex-direction: column; align-items: stretch; text-align: center; }
+    .twitch-btn { text-align: center; }
+    .socials a { padding: 16px 28px; font-size: 0.85rem; }
+    .cursor-glow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="sparks"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- ГЛАВНЫЙ ЭКРАН -->
+<div class="hero">
+  <div class="rank-badge">◆ Официальная страница ◆</div>
+
+  <div class="avatar-wrap" id="avatarWrap">
+    <img src="avatar.png" alt="pshk01">
+  </div>
+
+  <h1 class="dota-title">pshk01</h1>
+  <div class="subtitle">Dota 2 • Streamer</div>
+
+  <p class="bio">
+    В Dota 2 с <strong>2014 года</strong>. Ранг <strong>666</strong>.
+    Более <strong>5000 матчей</strong> и <strong>10000 часов</strong> в игре.
+    Здесь собраны лучшие моменты — мой личный Зал Славы.
+  </p>
+
+  <a href="#clips" class="btn-dota">Перейти к клипам</a>
+</div>
+
+<!-- СТАТИСТИКА -->
+<section class="container reveal">
+  <h2 class="section-title dota-title">Статистика</h2>
+  <div class="ornament"><div class="gem"></div></div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">⚔️</div>
+      <div class="stat-value">2014</div>
+      <div class="stat-label">Год старта</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">👑</div>
+      <div class="stat-value">666</div>
+      <div class="stat-label">Ранг</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🎮</div>
+      <div class="stat-value">5000</div>
+      <div class="stat-label">Матчей</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-value">10000</div>
+      <div class="stat-label">Часов</div>
+    </div>
+  </div>
+</section>
+
+<!-- ЗАЛ СЛАВЫ -->
+<section class="container reveal" id="clips">
+  <h2 class="section-title dota-title">Зал Славы</h2>
+  <div class="ornament"><div class="gem"></div></div>
+
+  <div class="clips-grid">
+
+    <!-- КЛИП 1 -->
+    <div class="clip-card">
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/dZj4fyspH5w?rel=0&modestbranding=1"
+          title="Клип 1"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
+      <div class="clip-info">
+        <h3>Лучший момент</h3>
+        <a class="twitch-btn" href="https://www.twitch.tv/pshk01/clip/AmazingRacyMangoAsianGlow-TRKzHMvp2b76KgQi?range=7d" target="_blank">Twitch</a>
+      </div>
+    </div>
+
+    <!-- КЛИП 2 -->
+    <div class="clip-card">
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/dLnzjhPwuG0?rel=0&modestbranding=1"
+          title="Клип 2"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
+      <div class="clip-info">
+        <h3>Жёсткий камбэк</h3>
+        <a class="twitch-btn" href="https://www.twitch.tv/pshk01/clip/TrustworthyMotionlessPeafowlBatChest-3_NZIk7FrAdzpEoa?range=7d" target="_blank">Twitch</a>
+      </div>
+    </div>
+
+    <!-- КЛИП 3 -->
+    <div class="clip-card">
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/DliazaDCd8Q?rel=0&modestbranding=1"
+          title="Клип 3"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
+      <div class="clip-info">
+        <h3>Момент года</h3>
+        <a class="twitch-btn" href="https://www.twitch.tv/pshk01/clip/ArtisticBenevolentDugongVoHiYo-_9mIcvkCoBQZPslW" target="_blank">Twitch</a>
+      </div>
+    </div>
+
+    <!-- КЛИП 4 -->
+    <div class="clip-card">
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/9ey69NKDMn8?rel=0&modestbranding=1"
+          title="Клип 4"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
+      <div class="clip-info">
+        <h3>Rampage в пабе</h3>
+        <a class="twitch-btn" href="https://www.twitch.tv/pshk01/clip/TentativeNaiveTrayFunRun-Uj5IyRuAABbpyF8v" target="_blank">Twitch</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- СОЦСЕТИ -->
+<section class="container reveal">
+  <h2 class="section-title dota-title">Соцсети</h2>
+  <div class="ornament"><div class="gem"></div></div>
+
+  <div class="socials">
+    <a href="https://twitch.tv/pshk01" target="_blank">
+      <svg viewBox="0 0 24 24" fill="#9146FF"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
+      Twitch
+    </a>
+    <a href="https://t.me/pshk01" target="_blank">
+      <svg viewBox="0 0 24 24" fill="#29A9EB"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      Telegram
+    </a>
+  </div>
+</section>
+
+<footer>
+  © 2025 pshk01 • Все права защищены
+</footer>
+
+<script>
+  const sparksContainer = document.getElementById('sparks');
+  function createSpark() {
+    const spark = document.createElement('div');
+    spark.className = 'spark';
+    spark.style.left = Math.random() * 100 + 'vw';
+    const duration = 6 + Math.random() * 8;
+    const size = 2 + Math.random() * 3;
+    spark.style.width = size + 'px';
+    spark.style.height = size + 'px';
+    spark.style.animationDuration = duration + 's';
+    spark.style.setProperty('--drift', (Math.random() * 200 - 100) + 'px');
+    const colors = ['#d4a24e', '#f9ecca', '#8b1a1a'];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    spark.style.background = color;
+    spark.style.boxShadow = `0 0 8px ${color}, 0 0 15px ${color}`;
+    sparksContainer.appendChild(spark);
+    setTimeout(() => spark.remove(), duration * 1000);
+  }
+  setInterval(createSpark, 300);
+  for (let i = 0; i < 15; i++) setTimeout(createSpark, i * 200);
+
+  const cursorGlow = document.getElementById('cursorGlow');
+  let mouseX = 0, mouseY = 0;
+  let glowX = 0, glowY = 0;
+  document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+  function animateGlow() {
+    glowX += (mouseX - glowX) * 0.12;
+    glowY += (mouseY - glowY) * 0.12;
+    cursorGlow.style.left = glowX + 'px';
+    cursorGlow.style.top = glowY + 'px';
+    requestAnimationFrame(animateGlow);
+  }
+  animateGlow();
+
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => io.observe(el));
+
+  const avatarWrap = document.getElementById('avatarWrap');
+  document.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 15;
+    const y = (e.clientY / window.innerHeight - 0.5) * 15;
+    avatarWrap.style.transform = `translate(${x}px, ${y}px)`;
+  });
+</script>
+
+</body>
+</html>
