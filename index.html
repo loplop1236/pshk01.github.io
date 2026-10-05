@@ -373,16 +373,28 @@
   animation: spin 3s linear infinite reverse;
   box-shadow: 0 0 20px rgba(249,236,202,0.5);
 }
-@keyframes spin { to { transform: rotate(360deg); } }
-.aegis-core {
-  font-size: 3rem;
-  filter: drop-shadow(0 0 25px #d4a24e);
-  animation: corePulse 1.5s ease-in-out infinite;
+@keyframes spin { to { transform: rotate(360deg); } }=
+ .aegis-core {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #d4a24e;
+  box-shadow: 0 0 25px #d4a24e, 0 0 50px rgba(212,162,78,0.6);
+  animation: spinCore 1.5s linear infinite;
   z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-@keyframes corePulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
+.aegis-core img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+@keyframes spinCore {
+  to { transform: rotate(360deg); }
 }
 .preloader-text {
   position: absolute; bottom: -50px;
@@ -432,7 +444,7 @@
   <div class="preloader-inner">
     <div class="aegis-ring"></div>
     <div class="aegis-ring aegis-ring-2"></div>
-    <div class="aegis-core">⚔️</div>
+   <div class="aegis-core"><img src="avatar.png" alt="loading"></div>
     <div class="preloader-text">ЗАГРУЗКА</div>
     <div class="preloader-dots">
       <span></span><span></span><span></span>
