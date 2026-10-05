@@ -345,9 +345,128 @@
     .cursor-glow { display: none; }
   }
 </style>
+ /* ===== ПРЕЛОАДЕР ===== */
+#preloader {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #150a08 0%, #050302 100%);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+#preloader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+.preloader-inner {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.aegis-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 160px;
+  height: 160px;
+  margin: -80px 0 0 -80px;
+  border: 2px solid transparent;
+  border-top-color: #d4a24e;
+  border-right-color: #8b6b2e;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+  box-shadow: 0 0 25px rgba(212,162,78,0.6);
+}
+.aegis-ring-2 {
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  border-top-color: #f9ecca;
+  border-right-color: transparent;
+  border-bottom-color: #8b1a1a;
+  animation: spin 3s linear infinite reverse;
+  box-shadow: 0 0 20px rgba(249,236,202,0.5);
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.aegis-core {
+  font-size: 3rem;
+  filter: drop-shadow(0 0 25px #d4a24e) drop-shadow(0 0 45px rgba(212,162,78,0.7));
+  animation: corePulse 1.5s ease-in-out infinite;
+  z-index: 2;
+}
+@keyframes corePulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 25px #d4a24e) drop-shadow(0 0 45px rgba(212,162,78,0.7)); }
+  50% { transform: scale(1.15); filter: drop-shadow(0 0 40px #f9ecca) drop-shadow(0 0 70px rgba(212,162,78,1)); }
+}
+.preloader-text {
+  position: absolute;
+  bottom: -50px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  letter-spacing: 8px;
+  color: #d4a24e;
+  text-transform: uppercase;
+  font-weight: 700;
+  animation: textGlow 2s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%, 100% { text-shadow: 0 0 10px #d4a24e; opacity: 0.7; }
+  50% { text-shadow: 0 0 25px #f9ecca, 0 0 45px #d4a24e; opacity: 1; }
+}
+.preloader-dots {
+  position: absolute;
+  bottom: -85px;
+  display: flex;
+  gap: 10px;
+}
+.preloader-dots span {
+  width: 8px;
+  height: 8px;
+  background: #d4a24e;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #d4a24e;
+  animation: dotPulse 1.4s ease-in-out infinite;
+}
+.preloader-dots span:nth-child(2) { animation-delay: 0.2s; }
+.preloader-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotPulse {
+  0%, 100% { transform: scale(0.6); opacity: 0.4; }
+  50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 25px #f9ecca; }
+}
 </head>
 <body>
-
+ <script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const preloader = document.getElementById('preloader');
+      if (preloader) preloader.classList.add('hidden');
+    }, 2000);
+  });
+  // Резерв — скрыть через 4 сек даже если что-то не загрузилось
+  setTimeout(() => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) preloader.classList.add('hidden');
+  }, 4000);
+</script>
+<div id="preloader">
+  <div class="preloader-inner">
+    <div class="aegis-ring"></div>
+    <div class="aegis-ring aegis-ring-2"></div>
+    <div class="aegis-core">⚔️</div>
+    <div class="preloader-text">ЗАГРУЗКА</div>
+    <div class="preloader-dots">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</div>
 <div id="sparks"></div>
 <div class="cursor-glow" id="cursorGlow"></div>
 
