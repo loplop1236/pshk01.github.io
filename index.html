@@ -670,7 +670,109 @@
   });
 </script>
 
-</body><script>
+</body><style>
+  /* ===== КАСТОМНЫЙ КУРСОР ===== */
+  @media (hover: hover) and (pointer: fine) {
+    * { cursor: none !important; }
+  }
+  
+  #swordCursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    font-size: 36px;
+    pointer-events: none;
+    z-index: 999999;
+    filter: drop-shadow(0 0 8px #d4a24e) drop-shadow(0 0 15px rgba(212,162,78,0.8));
+    will-change: transform;
+    transition: transform 0.08s ease-out;
+    user-select: none;
+  }
+  
+  .cursor-spark {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999998;
+    border-radius: 50%;
+    will-change: transform, opacity;
+  }
+  
+  @media (max-width: 700px) {
+    #swordCursor, .cursor-spark { display: none; }
+  }
+</style>
+
+<script>
+  (function() {
+    // Не показываем на тач-устройствах (телефон/планшет)
+    if (window.matchMedia('(hover: none)').matches) return;
+    
+    // Создаём меч
+    const cursor = document.createElement('div');
+    cursor.id = 'swordCursor';
+    cursor.textContent = '⚔️';
+    document.body.appendChild(cursor);
+    
+    let mouseX = 0, mouseY = 0;
+    let swordX = 0, swordY = 0;
+    
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+    
+    // Плавное следование меча за курсором
+    function animateSword() {
+      swordX += (mouseX - swordX) * 0.3;
+      swordY += (mouseY - swordY) * 0.3;
+      cursor.style.transform = `translate(${swordX - 18}px, ${swordY - 18}px) rotate(-20deg)`;
+      requestAnimationFrame(animateSword);
+    }
+    animateSword();
+    
+    // Огненный след из искр
+    let lastSparkTime = 0;
+    function createSpark(x, y) {
+      const spark = document.createElement('div');
+      spark.className = 'cursor-spark';
+      const size = 4 + Math.random() * 6;
+      spark.style.width = size + 'px';
+      spark.style.height = size + 'px';
+      spark.style.left = x + 'px';
+      spark.style.top = y + 'px';
+      
+      const colors = ['#f9ecca', '#d4a24e', '#8b1a1a'];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      spark.style.background = `radial-gradient(circle, ${color}, transparent 70%)`;
+      spark.style.boxShadow = `0 0 10px ${color}`;
+      document.body.appendChild(spark);
+      
+      const offsetX = (Math.random() - 0.5) * 40;
+      const offsetY = (Math.random() - 0.5) * 40 + 10;
+      let life = 1;
+      
+      function fade() {
+        life -= 0.04;
+        if (life <= 0) {
+          spark.remove();
+          return;
+        }
+        spark.style.opacity = life;
+        spark.style.transform = `translate(${offsetX * (1 - life)}px, ${offsetY * (1 - life)}px) scale(${life})`;
+        requestAnimationFrame(fade);
+      }
+      fade();
+    }
+    
+    document.addEventListener('mousemove', (e) => {
+      const now = Date.now();
+      if (now - lastSparkTime > 35) {
+        createSpark(e.clientX, e.clientY);
+        lastSparkTime = now;
+      }
+    });
+  })();
+</script><script>
   let audioCtx = null;
   function initAudio() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
