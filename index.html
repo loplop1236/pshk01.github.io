@@ -193,7 +193,8 @@
     display: inline-block; transition: transform 0.4s;
   }
   .stat-card:hover .stat-icon { transform: scale(1.2) rotate(-8deg); }
-  .stat-value {
+  .stat-value {margin-bottom: 6px;min-width: 120px;
+display: inline-block;
     font-family: 'Cinzel', serif; font-weight: 900; font-size: 2.4rem;
     color: #f4e0a1;
     text-shadow: 0 0 25px rgba(212,162,78,0.6), 0 2px 4px rgba(0,0,0,0.9);
@@ -481,7 +482,28 @@ transform-style: preserve-3d;
   <h2 class="section-title dota-title">Статистика</h2>
   <div class="ornament"><div class="gem"></div></div>
 
-  <div class="stats-grid">
+ <div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon">⚔️</div>
+    <div class="stat-value" data-target="2014">0</div>
+    <div class="stat-label">Год старта</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">👑</div>
+    <div class="stat-value" data-target="666">0</div>
+    <div class="stat-label">Ранг</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🎮</div>
+    <div class="stat-value" data-target="5000">0</div>
+    <div class="stat-label">Матчей</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🔥</div>
+    <div class="stat-value" data-target="10000">0</div>
+    <div class="stat-label">Часов</div>
+  </div>
+</div>
     <div class="stat-card">
       <div class="stat-icon">⚔️</div>
       <div class="stat-value">2014</div>
@@ -672,7 +694,51 @@ transform-style: preserve-3d;
   });
 </script>
 
-</body><script>
+<script>
+  // ===== АНИМИРОВАННЫЕ ЦИФРЫ =====
+  document.addEventListener('DOMContentLoaded', () => {
+    const counters = document.querySelectorAll('.stat-value[data-target]');
+    let started = false;
+    
+    function animateCounter(el) {
+      const target = parseInt(el.getAttribute('data-target'));
+      const duration = 2000; // 2 секунды
+      const startTime = performance.now();
+      
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Плавное замедление в конце (ease-out)
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(eased * target);
+        
+        el.textContent = current.toLocaleString('ru-RU');
+        
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = target.toLocaleString('ru-RU');
+        }
+      }
+      
+      requestAnimationFrame(update);
+    }
+    
+    // Запускаем когда секция статистики появится на экране
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !started) {
+          started = true;
+          counters.forEach(el => animateCounter(el));
+        }
+      });
+    }, { threshold: 0.3 });
+    
+    const statsSection = document.querySelector('.stats-grid');
+    if (statsSection) observer.observe(statsSection);
+  });
+</script></body><script>
   // ===== 3D-TILT КАРТОЧКИ =====
   document.querySelectorAll('.clip-card').forEach(card => {
     card.addEventListener('mousemove', (e) => {
